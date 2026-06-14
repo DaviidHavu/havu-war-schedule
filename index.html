@@ -1,110 +1,109 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Havu War Schedule</title>
 
 <style>
-body{
+body {
     font-family: Arial, sans-serif;
-    background:#1b1f24;
-    color:white;
-    margin:0;
-    padding:20px;
+    margin: 0;
+    background: #1c1f26;
+    color: white;
 }
 
-.container{
-    max-width:900px;
-    margin:auto;
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
 }
 
-h1{
-    text-align:center;
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-th{
-    background:#ff9800;
-    padding:12px;
+th {
+    background: #ff9800;
+    color: black;
+    padding: 12px;
 }
 
-td{
-    padding:12px;
-    border-bottom:1px solid #444;
-    text-align:center;
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #333;
 }
 
-tr:hover{
-    background:#2a2f36;
+tr:hover {
+    background: #2a2f36;
 }
 
-.password-screen{
-    position:fixed;
-    inset:0;
-    background:#111;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
+#loginScreen {
+    position: fixed;
+    inset: 0;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-input{
-    padding:10px;
-    font-size:16px;
+input {
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 10px;
 }
 
-button{
-    padding:10px 20px;
-    margin-top:10px;
-    cursor:pointer;
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div id="login" class="password-screen">
-    <h2>Havu Management Access</h2>
-    <input type="password" id="password" placeholder="Enter Password">
-    <button onclick="checkPassword()">Login</button>
+<div id="loginScreen">
+    <h2>Havu Clan Access</h2>
+    <input type="password" id="passwordInput" placeholder="Enter Password">
+    <button onclick="checkPassword()">Enter</button>
 </div>
 
-<div class="container" id="content" style="display:none;">
+<div class="container" id="mainContent" style="display:none;">
     <h1>🏰 HAVU WAR SCHEDULE ⚔️</h1>
 
     <table>
         <thead>
             <tr>
-                <th>תאריך</th>
-                <th>מנהל מלחמה</th>
+                <th>Date</th>
+                <th>War Leader</th>
             </tr>
         </thead>
-        <tbody>
-            <tr><td>01/07/2026</td><td>דויד</td></tr>
-            <tr><td>02/07/2026</td><td>יוני</td></tr>
-            <tr><td>03/07/2026</td><td>עמית</td></tr>
-        </tbody>
+        <tbody id="scheduleBody"></tbody>
     </table>
 </div>
 
 <script>
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/137WoS-lsagp_0VsshH8uPtZo8fVP9TseUUiuPhqFa-g/gviz/tq?tqx=out:json";
 
-async function loadData(){
+async function loadData() {
     try {
         const res = await fetch(SHEET_URL);
         const text = await res.text();
 
-        const json = JSON.parse(text.substring(47).slice(0,-2));
+        const json = JSON.parse(text.substring(47).slice(0, -2));
         const rows = json.table.rows;
 
-        const tbody = document.getElementById("schedule-body");
+        const tbody = document.getElementById("scheduleBody");
         tbody.innerHTML = "";
 
         rows.forEach(r => {
@@ -116,17 +115,17 @@ async function loadData(){
             tbody.appendChild(row);
         });
 
-    } catch (e) {
-        console.log("Error loading sheet:", e);
+    } catch (err) {
+        console.log("Error loading sheet", err);
     }
 }
 
-function checkPassword(){
-    const pass = document.getElementById("password").value;
+function checkPassword() {
+    const pass = document.getElementById("passwordInput").value;
 
-    if(pass === "Havuwarlog"){
-        document.getElementById("login").style.display = "none";
-        document.getElementById("content").style.display = "block";
+    if (pass === "Havuwarlog") {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
         loadData();
     } else {
         alert("Wrong Password");
