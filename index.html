@@ -94,13 +94,41 @@ button{
 </div>
 
 <script>
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/137WoS-lsagp_0VsshH8uPtZo8fVP9TseUUiuPhqFa-g/gviz/tq?tqx=out:json";
+
+async function loadData(){
+    try {
+        const res = await fetch(SHEET_URL);
+        const text = await res.text();
+
+        const json = JSON.parse(text.substring(47).slice(0,-2));
+        const rows = json.table.rows;
+
+        const tbody = document.getElementById("schedule-body");
+        tbody.innerHTML = "";
+
+        rows.forEach(r => {
+            const date = r.c[0] ? r.c[0].v : "";
+            const leader = r.c[1] ? r.c[1].v : "";
+
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${date}</td><td>${leader}</td>`;
+            tbody.appendChild(row);
+        });
+
+    } catch (e) {
+        console.log("Error loading sheet:", e);
+    }
+}
+
 function checkPassword(){
     const pass = document.getElementById("password").value;
 
-    if(pass === "HAVU123"){
+    if(pass === "Havuwarlog"){
         document.getElementById("login").style.display = "none";
         document.getElementById("content").style.display = "block";
-    }else{
+        loadData();
+    } else {
         alert("Wrong Password");
     }
 }
