@@ -7,9 +7,9 @@
 
 <style>
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
-    background: #1c1f26;
+    font-family: Arial, sans-serif;
+    background: #1b1f27;
     color: white;
 }
 
@@ -46,41 +46,20 @@ tr:hover {
     background: #2a2f36;
 }
 
-#loginScreen {
-    position: fixed;
-    inset: 0;
-    background: #111;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-input {
-    padding: 10px;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
+.header {
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
 }
 </style>
 </head>
 
 <body>
 
-<div id="loginScreen">
-    <h2>Havu Clan Access</h2>
-    <input type="password" id="passwordInput" placeholder="Enter Password">
-    <button onclick="checkPassword()">Enter</button>
-</div>
+<div class="header">🏰 HAVU WAR SCHEDULE ⚔️</div>
 
-<div class="container" id="mainContent" style="display:none;">
-    <h1>🏰 HAVU WAR SCHEDULE ⚔️</h1>
-
+<div class="container">
     <table>
         <thead>
             <tr>
@@ -116,21 +95,11 @@ async function loadData() {
         });
 
     } catch (err) {
-        console.log("Error loading sheet", err);
+        console.log("Error loading sheet:", err);
     }
 }
 
-function checkPassword() {
-    const pass = document.getElementById("passwordInput").value;
-
-    if (pass === "Havuwarlog") {
-        document.getElementById("loginScreen").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-        loadData();
-    } else {
-        alert("Wrong Password");
-    }
-}
+loadData();
 </script>
 
 </body>
